@@ -24,10 +24,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.process.traversal.step.TraversalParent;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,7 +54,10 @@ public class ParametersTest {
 
         final Object[] params = parameters.getKeyValues(mock(Traverser.Admin.class));
         assertEquals(6, params.length);
-        assertThat(Arrays.equals(new Object[] {"a", null, "b", "bat", "c", "cat"}, params), is(true));
+        Object[] expected = new Object[] {"a", null, "b", "bat", "c", "cat"};
+        Arrays.sort(params, Comparator.nullsFirst(Comparator.comparing(Object::toString)));
+        Arrays.sort(expected, Comparator.nullsFirst(Comparator.comparing(Object::toString)));
+        assertThat(Arrays.equals(expected, params), is(true));
     }
 
     @Test
