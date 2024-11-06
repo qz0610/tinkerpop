@@ -18,7 +18,6 @@ under the License.
 """
 import codecs
 import os
-import sys
 import time
 from setuptools import setup
 
@@ -48,7 +47,10 @@ install_requires = [
     'nest_asyncio',
     'aiohttp>=3.8.0,<4.0.0',
     'aenum>=1.4.5,<4.0.0',
-    'isodate>=0.6.0,<1.0.0'
+    'isodate>=0.6.0,<1.0.0',
+    'boto3',
+    'botocore',
+    'async-timeout>=4.0.3,<5.0; python_version < "3.11"',
 ]
 
 setup(
@@ -60,6 +62,8 @@ setup(
     license='Apache 2',
     url='https://tinkerpop.apache.org',
     description='Gremlin-Python for Apache TinkerPop',
+    maintainer='Apache TinkerPop',
+    maintainer_email='dev@tinkerpop.apache.org',
     long_description=codecs.open("README.rst", "r", "UTF-8").read(),
     long_description_content_type='text/x-rst',
     test_suite="tests",
@@ -76,7 +80,7 @@ setup(
     ],
     install_requires=install_requires,
     extras_require={
-        'kerberos': 'kerberos>=1.3.0,<2.0.0',    # Does not install in Microsoft Windows
+        'kerberos': 'kerberos>=1.3.0,<2.0.0; sys_platform != "win32"',  # Does not install in Microsoft Windows
         'ujson': 'ujson>=2.0.0'
     },
     classifiers=[
@@ -84,5 +88,6 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
         "Programming Language :: Python :: 3"
-    ]
+    ],
+    python_requires='>=3.9'
 )

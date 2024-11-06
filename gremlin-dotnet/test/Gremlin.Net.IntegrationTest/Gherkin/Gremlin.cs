@@ -30,6 +30,7 @@
 #nullable disable
 
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using Gremlin.Net.Structure;
 using Gremlin.Net.Process.Traversal;
@@ -1237,6 +1238,16 @@ namespace Gremlin.Net.IntegrationTest.Gherkin
                {"g_injectXlistXnull_10_5_nullXX_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>(p["xx1"]).Sum<object>(Scope.Local)}}, 
                {"g_VX1X_valuesXageX_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V(p["vid1"]).Values<object>("age").Sum<object>(Scope.Local)}}, 
                {"g_V_localXunionXvaluesXageX_outE_valuesXweightXX_foldX_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Local<object>(__.Union<object>(__.Values<object>("age"), __.OutE().Values<object>("weight")).Fold()).Sum<object>(Scope.Local)}}, 
+               {"g_V_age_injectX1000nX_sum", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Values<object>("age").Inject(new BigInteger(1000)).Sum<object>()}}, 
+               {"g_injectX1b_2b_3bX_sum", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, (byte) 3).Sum<object>()}}, 
+               {"g_injectX1b_2b_3sX_sum", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, (short) 3).Sum<object>()}}, 
+               {"g_injectX1b_26b_3iX_sum", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, 3).Sum<object>()}}, 
+               {"g_injectX1f_26f_3fX_sum", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>(1f, 2f, 3f).Sum<object>()}}, 
+               {"g_V_age_injectX1000nX_fold_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Values<object>("age").Inject(new BigInteger(1000)).Fold().Sum<object>(Scope.Local)}}, 
+               {"g_injectX1b_2b_3bX_fold_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, (byte) 3).Fold().Sum<object>(Scope.Local)}}, 
+               {"g_injectX1b_2b_3sX_fold_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, (short) 3).Fold().Sum<object>(Scope.Local)}}, 
+               {"g_injectX1b_26b_3iX_fold_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>((byte) 1, (byte) 2, 3).Fold().Sum<object>(Scope.Local)}}, 
+               {"g_injectX1f_26f_3fX_fold_sumXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>(1f, 2f, 3f).Fold().Sum<object>(Scope.Local)}}, 
                {"g_injectXfeature_test_nullX_toLower", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>("FEATURE", "tESt", null).ToLower()}}, 
                {"g_injectXfeature_test_nullX_toLowerXlocalX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>(p["xx1"]).ToLower<object>(Scope.Local)}}, 
                {"g_injectXListXa_bXX_toLower", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.Inject<object>(p["xx1"]).ToLower()}}, 
@@ -1542,6 +1553,8 @@ namespace Gremlin.Net.IntegrationTest.Gherkin
                {"g_withBulkXfalseX_withSackX1_sumX_V_out_barrier_sack", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.WithBulk(false).WithSack(1, Operator.Sum).V().Out().Barrier().Sack<object>()}}, 
                {"g_withSackX1_sumX_VX1X_localXoutXknowsX_barrierXnormSackXX_inXknowsX_barrier_sack", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.WithSack(1.0, Operator.Sum).V(p["vid1"]).Local<object>(__.Out("knows").Barrier(Barrier.NormSack)).In("knows").Barrier().Sack<object>()}}, 
                {"g_V_sackXassignX_byXageX_sack", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Sack(Operator.Assign).By("age").Sack<object>()}}, 
+               {"g_withSackXBigInteger_TEN_powX1000X_assignX_V_localXoutXknowsX_barrierXnormSackXX_inXknowsX_barrier_sack", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.WithSack(p["xx1"], Operator.Assign).V().Local<object>(__.Out("knows").Barrier(Barrier.NormSack)).In("knows").Barrier().Sack<object>()}}, 
+               {"g_withSackX2X_V_sackXdivX_byXconstantX4_0XX_sack", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.WithSack(2).V().Sack(Operator.Div).By(__.Constant<object>(p["xx1"])).Sack<object>()}}, 
                {"g_V_hasXageX_groupCountXaX_byXnameX_out_capXaX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Has("age").GroupCount("a").By("name").Out().Cap<object>("a")}}, 
                {"g_V_groupXaX_byXageX_capXaX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Group("a").By("age").Cap<object>("a")}}, 
                {"g_V_groupXaX_byXnameX_capXaX", new List<Func<GraphTraversalSource, IDictionary<string, object>, ITraversal>> {(g,p) =>g.V().Group("a").By("name").Cap<object>("a")}}, 
